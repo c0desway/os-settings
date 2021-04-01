@@ -1,0 +1,40 @@
+#/bin/bash
+
+# ubuntu 16.04 init os settings
+# setterm --blank 0
+
+
+# time
+rdate -s time.bora.net
+systemctl restart chrony.service
+
+
+# sudo
+%sudo   ALL=(ALL:ALL) ALL
+
+
+# ssh
+
+
+# apt upgate
+sudo apt-get update
+
+
+# python3.7
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt-get update
+sudo apt-get install python3.7 python3.7-venv
+
+
+# pip3
+sudo apt-get install python3-pip
+
+
+# git
+sudo apt-get install git
+
+
+# time
+rdate
