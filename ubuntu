@@ -5,7 +5,7 @@
 
 
 # time
-timedatectl set-localzone Asia/Seoul
+timedatectl set-timezone Asia/Seoul
 rdate -s time.bora.net
 systemctl restart chrony.service
 systemctl enable chrony.service
