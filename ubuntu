@@ -43,7 +43,6 @@ yum -y install git rdate
 #
 apt-get update
 apt-get -y install git rdate
-# git config http.sslVerify false
 # git config --global http.sslVerify false
 
 
