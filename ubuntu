@@ -1,42 +1,116 @@
 #/bin/bash
 
-# ubuntu 16.04 init os settings
+# ubuntu 16.04/centos 7.9 init os settings
 # setterm --blank 0
 
-
-# time
-timedatectl set-timezone Asia/Seoul
-rdate -s time.bora.net
-systemctl restart chrony.service
-systemctl enable chrony.service
-
-
+#
 # sudo
-%sudo   ALL=(ALL:ALL) ALL
+#
+#%sudo   ALL=(ALL:ALL) ALL
 
-
+###########################
+# Essential
+###########################
+#
 # ssh
+#
+SSH_CONFIG=/etc/ssh/sshd_config
+sed -i -e "s:^#PermitRootLogin:PermitRootLogin:g" $SSH_CONFIG
+sed -i -e "s:^PasswordAuthentication no:PasswordAuthentication yes:g" $SSH_CONFIG
 
 
-# apt upgate
-sudo apt-get update
+#
+# ntp/chrony
+#
+timedatectl set-timezone Asia/Seoul
+timedatectl restart chronyd
+timedatectl enable chronyd
 
 
+#
+# SELINUX 
+#   : needs to reboot
+#
+SELINUX_CONFIG=/etc/selinux/config
+sed -i -e "s:^SELINUX=enforcing:SELINUX=permissive:g" $SELINUX_CONFIG
+
+
+#
+# os package 
+#
+yum -y update
+yum -y install git rdate
+#
+apt-get update
+apt-get -y install git rdate
+
+
+
+###########################
+# Optional
+###########################
+#
 # python3.7
+#
 sudo apt-get update
 sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
 sudo apt-get install python3.7 python3.7-venv
 
-
 # pip3
 sudo apt-get install python3-pip
 
 
-# git
-sudo apt-get install git
+
+#
+# ansible
+#   : python 2.7 above
+#
+# ansible -i smlee-hosts dns-api-db -m shell -a "ls -alht"
+# ansible-playbook playbook/command.yml -i smlee-hosts -vvv
+yum install epel-release
+yum install ansible
+
+ssh-keygen
+ssh-copy-id root@<client_ip>
 
 
-# time
-rdate
+
+#
+# galera cluster setup
+#   : galera_new_cluster 
+#
+curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
+yum clean all
+
+yum -y install MariaDB-server MariaDB-client galera-4 MariaDB-shared
+yum -y install MariaDB-backup 
+yum -y install MariaDB-cracklib-password-check
+
+# init setting for galera cluster
+MY_CNF=/etc/my.cnf
+IP01=<GALERA_NODE_01_IP>
+IP02=<GALERA_NODE_02_IP>
+IP03=<GALERA_NODE_03_IP>
+
+echo "" >> $MY_CNF
+echo "[mysqld]" >> $MY_CNF
+echo "binlog_format = row" >> $MY_CNF
+echo "" >> $MY_CNF
+echo "wsrep_on = on" >> $MY_CNF
+echo "wsrep_provider = /usr/lib64/galera-4/libgalera_smm.so" >> $MY_CNF
+echo "wsrep_cluster_address = 'gcomm://$IP01,$IP02,$IP03'" >> $MY_CNF
+
+# you MUST check SHOW GLOBAL STATUS LIKE 'wsrep_cluster_size' is 1
+galera_new_cluster
+systemctl enable mysql
+
+# init setting db account
+delete from mysql.user where user="";
+flush privileges;
+
+# references
+
+
+
