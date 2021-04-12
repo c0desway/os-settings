@@ -5,8 +5,10 @@
 
 
 # time
+timedatectl set-localzone Asia/Seoul
 rdate -s time.bora.net
 systemctl restart chrony.service
+systemctl enable chrony.service
 
 
 # sudo
