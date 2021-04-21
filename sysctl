@@ -1,0 +1,13 @@
+#
+# sysctl.conf
+#
+# by user
+/etc/security/limits.conf
+* hard nofile 65535
+* soft nofile 65535
+* hard nproc 65535
+* soft nproc 65535
+
+# by system
+/etc/sysctl.conf 
+fs.file-max=65535
