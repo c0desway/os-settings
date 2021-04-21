@@ -18,14 +18,12 @@ SSH_CONFIG=/etc/ssh/sshd_config
 sed -i -e "s:^#PermitRootLogin:PermitRootLogin:g" $SSH_CONFIG
 sed -i -e "s:^PasswordAuthentication no:PasswordAuthentication yes:g" $SSH_CONFIG
 
-
 #
 # ntp/chrony
 #
 timedatectl set-timezone Asia/Seoul
 timedatectl restart chronyd
 timedatectl enable chronyd
-
 
 #
 # SELINUX 
@@ -38,12 +36,14 @@ sed -i -e "s:^SELINUX=enforcing:SELINUX=permissive:g" $SELINUX_CONFIG
 #
 # os package 
 #
-yum -y update
-yum -y install git rdate
-#
+# ubuntu
 apt-get update
 apt-get -y install git rdate
-# git config --global http.sslVerify false
+git config --global http.sslVerify false
+# centos
+yum -y update
+yum -y install git rdate
+git config --global http.sslVerify false
 
 
 
@@ -66,6 +66,7 @@ sudo apt-get install python3-pip
 #
 # Go 
 #   : https://golang.org/doc/install
+#
 wget https://golang.org/dl/go1.16.3.linux-amd64.tar.gz
 rm -rf /usr/local/go && tar -C /usr/local -xzf go1.16.3.linux-amd64.tar.gz
 echo "export PATH=\$PATH:/usr/local/go/bin" >> /etc/profile
@@ -91,8 +92,9 @@ ssh-copy-id root@<client_ip>
 
 #
 # galera cluster setup
-#   : galera_new_cluster 
+#   : galera_new_cluster
 #
+#centos
 curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
 yum clean all
 
@@ -102,9 +104,9 @@ yum -y install MariaDB-cracklib-password-check
 
 # init setting for galera cluster
 MY_CNF=/etc/my.cnf
-IP01=<GALERA_NODE_01_IP>
-IP02=<GALERA_NODE_02_IP>
-IP03=<GALERA_NODE_03_IP>
+IP01=<GALERA_NODE_IP_01>
+IP02=<GALERA_NODE_IP_02>
+IP03=<GALERA_NODE_IP_03>
 
 echo "" >> $MY_CNF
 echo "[mysqld]" >> $MY_CNF
@@ -115,14 +117,12 @@ echo "wsrep_provider = /usr/lib64/galera-4/libgalera_smm.so" >> $MY_CNF
 echo "wsrep_cluster_address = 'gcomm://$IP01,$IP02,$IP03'" >> $MY_CNF
 
 # you MUST check SHOW GLOBAL STATUS LIKE 'wsrep_cluster_size' is 1
+# after the command below was started
 galera_new_cluster
 systemctl enable mysql
 
 # init setting db account
+drop databases test;
 delete from mysql.user where user="";
 flush privileges;
-
-# references
-
-
 
