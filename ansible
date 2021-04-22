@@ -38,14 +38,14 @@ galera/
 └── vars
     └── main.yml
     
+defaults : 공통으로 사용할 변수 설정
+files : target 으로 배포할 file, 주로 설치파일
+handlers : task의 작업이 성공했을 때 호출되는 작업,ex) service start mysql
+meta : role에 대한 meta data, role 간 의존성 정의 (작성자, 라이센스, 플랫폼 등 역할 종속성 정보)
+tasks : 해당 ROLE에 의해 수행 될 task 정의
+templates : role 배포 시 수정이 필요한 파일 템플릿, my.cnf 같은것, jinja2 템플릿 존재
+vars : 변수 설정, defaults 보다 우선순위가 높음
 
-defaults: 역할변수의 기본값이 설정되어 있는 디렉토리
-files: 역할작업에서 참조하는 정적파일이 있는 디렉토리
-handlers: 역할의 핸들러가 정의 되어 있는 디렉토리
-meta: 작성자,라이센스,플랫폼 등의 역할종속성을 포함한 역할에 대한 정보가 저장되어 있는 디렉토리
-templates: jinja2 템플릿이 있는 디렉토리
-tests: 역할을 테스트할대 사용하는 인벤토리가 있는 디렉토리
-vars: main.yml 파일에 역할변수의 값을 정의하는 디렉토리
 
 
 # ansible.cfg
