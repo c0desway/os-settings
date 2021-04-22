@@ -1,0 +1,62 @@
+#
+# generate key
+#
+ssh-keygen
+ssh-copy-id <user>@<host>
+
+# ad-hoc 
+ansible -i hosts smlee-db -a "hostname"
+
+# yaml
+key: | nueline
+key: > not newline
+
+# 변수는 inventory에 바로사용하지 말고 xxx_vars 디렉토리를 사용
+
+#
+# ansible galaxy 를 통한 role 생성
+#
+mkdir roles
+cd roles
+ansible-galaxy init galera
+
+galera/
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   └── main.yml
+├── templates
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+    
+
+defaults: 역할변수의 기본값이 설정되어 있는 디렉토리
+files: 역할작업에서 참조하는 정적파일이 있는 디렉토리
+handlers: 역할의 핸들러가 정의 되어 있는 디렉토리
+meta: 작성자,라이센스,플랫폼 등의 역할종속성을 포함한 역할에 대한 정보가 저장되어 있는 디렉토리
+templates: jinja2 템플릿이 있는 디렉토리
+tests: 역할을 테스트할대 사용하는 인벤토리가 있는 디렉토리
+vars: main.yml 파일에 역할변수의 값을 정의하는 디렉토리
+
+
+# ansible.cfg
+[defaults]
+inventory = ./inventory
+remote_user = admin
+ask_pass = false
+[privilege_escaltion]
+become = true
+become_user = root
+become_method = sudo
+
+
+
