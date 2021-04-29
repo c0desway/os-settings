@@ -22,8 +22,8 @@ sed -i -e "s:^PasswordAuthentication no:PasswordAuthentication yes:g" $SSH_CONFI
 # ntp/chrony
 #
 timedatectl set-timezone Asia/Seoul
-timedatectl restart chronyd
-timedatectl enable chronyd
+systemctl restart chronyd
+systemctl enable chronyd
 
 #
 # SELINUX 
