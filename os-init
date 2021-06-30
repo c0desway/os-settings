@@ -17,6 +17,7 @@
 SSH_CONFIG=/etc/ssh/sshd_config
 sed -i -e "s:^#PermitRootLogin:PermitRootLogin:g" $SSH_CONFIG
 sed -i -e "s:^PasswordAuthentication no:PasswordAuthentication yes:g" $SSH_CONFIG
+systemctl restart sshd
 
 #
 # ntp/chrony
