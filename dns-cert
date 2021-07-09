@@ -13,8 +13,8 @@ openssl req -new -key private.key -out highway53.csr
 openssl genrsa -aes256 -out rootCA.key 2048
 
 # rootCA .csr(.req)
-# CN : Hyundai R&D infradev team root CA
 # O : Hyundai Motor Group
+# CN : Hyundai R&D infradev team root CA
 openssl req -x509 -new -nodes -key rootCA.key -out rootCA.csr
 
 # rootCA .crt(.cer)
