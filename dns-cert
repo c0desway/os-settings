@@ -2,24 +2,23 @@
 openssl genrsa -out private.key 2048
 
 # .csr/.req (certificate signing request)
-# CN : *.h53
-openssl req -new -key private.key -out highway53.csr
+# CN : *.smlee.com
+openssl req -new -key private.key -out smleecom.csr
 
 # .crt
-# openssl x509 -req -in highway53.csr -signkey private.key -out highway53.crt -days 3650
+# openssl x509 -req -in smleecom.csr -signkey private.key -out smleecom.crt -days 3650
 
 
 # rootCA private key
 openssl genrsa -aes256 -out rootCA.key 2048
 
 # rootCA .csr(.req)
-# O : Hyundai Motor Group
-# CN : Hyundai R&D infradev team root CA
+# CN : smlee team root CA
+# O : smlee company
 openssl req -x509 -new -nodes -key rootCA.key -out rootCA.csr
 
 # rootCA .crt(.cer)
-openssl x509 -req -in highway53.csr -CA rootCA.csr -CAkey rootCA.key -CAcreateserial -out highway53.crt -days 3650
+openssl x509 -req -in smleecom.csr -CA rootCA.csr -CAkey rootCA.key -CAcreateserial -out smleecom.crt -days 3650
 
 # print
-openssl x509 -in highway53.crt -text -noout
-
+openssl x509 -in smleecom.crt -text -noout
