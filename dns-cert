@@ -1,0 +1,25 @@
+# private key (default sha256)
+openssl genrsa -out private.key 2048
+
+# .csr/.req (certificate signing request)
+# CN : *.h53
+openssl req -new -key private.key -out highway53.csr
+
+# .crt
+# openssl x509 -req -in highway53.csr -signkey private.key -out highway53.crt -days 3650
+
+
+# rootCA private key
+openssl genrsa -aes256 -out rootCA.key 2048
+
+# rootCA .csr(.req)
+# CN : Hyundai R&D infradev team root CA
+# O : Hyundai Motor Group
+openssl req -x509 -new -nodes -key rootCA.key -out rootCA.csr
+
+# rootCA .crt(.cer)
+openssl x509 -req -in highway53.csr -CA rootCA.csr -CAkey rootCA.key -CAcreateserial -out highway53.crt -days 3650
+
+# print
+openssl x509 -in highway53.crt -text -noout
+
