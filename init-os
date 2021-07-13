@@ -19,12 +19,14 @@ sed -i -e "s:^#PermitRootLogin:PermitRootLogin:g" $SSH_CONFIG
 sed -i -e "s:^PasswordAuthentication no:PasswordAuthentication yes:g" $SSH_CONFIG
 systemctl restart sshd
 
+
 #
-# ntp/chrony
-#
+# chrony
+#  : rdate -s time.bora.net && hwclock --localtime --systohc # set localtime to hwtime
 timedatectl set-timezone Asia/Seoul
 systemctl restart chronyd
 systemctl enable chronyd
+
 
 #
 # SELINUX 
