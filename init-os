@@ -23,6 +23,7 @@ systemctl restart sshd
 #
 # chrony
 #  : rdate -s time.bora.net && hwclock --localtime --systohc # set localtime to hwtime
+#  : crontab @reboot or /etc/rc.local
 timedatectl set-timezone Asia/Seoul
 systemctl restart chronyd
 systemctl enable chronyd
@@ -47,6 +48,13 @@ git config --global http.sslVerify false
 yum -y update
 yum -y install git rdate
 git config --global http.sslVerify false
+
+
+#
+# /etc/profile
+#
+export HISTTIMEFORMAT='%F %T '
+
 
 
 
