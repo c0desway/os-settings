@@ -100,3 +100,13 @@ ssh-keygen
 ssh-copy-id root@<client_ip>
 
 
+
+###########################
+# Just in cases
+###########################
+#
+# ca-certificates
+# 
+sudo apt-get install ca-certificates or apt-get install --reinstall ca-certificates
+sudo update-ca-certificates 
+
