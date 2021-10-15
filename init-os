@@ -110,3 +110,25 @@ ssh-copy-id root@<client_ip>
 sudo apt-get install ca-certificates or apt-get install --reinstall ca-certificates
 sudo update-ca-certificates 
 
+#
+# .bash_profile
+#
+ulimit -Sn 65536
+ulimit -Hn 65536
+ulimit -Su 16384
+ulimit -Hu 16384
+
+export MYSQL_HOME=/var/lib/mysql
+
+function myhome {
+  cd $MYSQL_HOME
+}
+
+function mylog {
+  vi $MYSQL_HOME/log/mysql.log
+}
+
+alias mydir='cd $MYSQL_HOME'
+
+
+
