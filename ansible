@@ -57,6 +57,10 @@ ask_pass = false
 become = true
 become_user = root
 become_method = sudo
+become_flags = "-"
+[inventory]
+ansible_user=OSUSER
+ansible_password=PASSWORD
 
 
 
