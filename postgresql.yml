@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  postgresql-01:
+    container_name: postgresql-01
+    hostname: postgresql-01
+    image: postgres:9.6.21
+    mem_limit: "1g"
+    command: "postgres -c config_file=/etc/postgresql/postgresql.conf"
+    restart: always
+    volumes:
+      - "${PWD}/postgresql-01/data:/var/lib/postgresql/data"
+      - "${PWD}/postgresql-01/log:/var/log/postgresql"
+      - "${PWD}/postgresql-01/conf/postgresql.conf:/etc/postgresql/postgresql.conf"
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: "root"
+      TZ: "Asia/Seoul"
+    networks:
+      - mybridge
+networks:
+  mybridge:
+    external: true
